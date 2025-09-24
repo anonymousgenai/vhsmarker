@@ -1,0 +1,1038 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VHSMarker: A High-Precision Annotation Tool for Canine Cardiac key point Detection and VHS Estimation</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.0.0/css/all.min.css" rel="stylesheet">
+
+    <style>
+        .breed-box {
+            border: 1px solid #dee2e6;
+            border-radius: 0.5rem;
+            padding: 10px;
+            margin: 5px;
+            background-color: #f8f9fa;
+            text-align: center;
+            font-size: 0.95rem;
+            box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        .table-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .breed-table {
+            border-collapse: collapse;
+            min-width: 250px;
+            max-width: 300px;
+        }
+
+        .breed-th,
+        .breed-td {
+            border: 1px solid #aaa;
+            padding: 5px 10px;
+            text-align: left;
+            font-size: 10px;
+        }
+
+        .breed-th {
+            background-color: #f0f0f0;
+        }
+
+        .breed-tr:nth-child(even) .breed-td {
+            background-color: #f9f9f9;
+        }
+        .breed-no {
+            font-weight: bold;
+            
+        }
+    </style>
+
+    <style>
+        :root {
+            /* --primary-color: #872a09; */
+            --primary-color: #0366d6;
+            --secondary-color: #1b1c1bc9;
+            --dark-color: #343a40;
+            --light-color: #f8f9fa;
+            --blue-color: #336290;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--light-color);
+            color: #495057;
+            line-height: 1.5;
+        }
+
+        .hero-section {
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8eb 100%);
+            padding: 4rem 0;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .header-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .header-subtitle {
+            font-size: 1.2rem;
+            font-weight: 300;
+            color: var(--dark-color);
+            margin-bottom: 2rem;
+        }
+
+        .novelty-card {
+            border: none;
+            border-radius: 10px;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            height: 100%;
+        }
+
+        .novelty-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .novelty-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+        }
+
+        .section-title {
+            font-size: 2rem;
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-bottom: 2rem;
+            position: relative;
+            padding-bottom: 0.5rem;
+        }
+
+        .section-title:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 60px;
+            height: 4px;
+            background: var(--secondary-color);
+        }
+
+        .feature-box {
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            margin-bottom: 2rem;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+            font-weight: 600;
+            padding: 0.5rem 1.5rem;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+
+        .btn-outline-secondary {
+            color: var(--secondary-color);
+            border-color: var(--secondary-color);
+            font-weight: 600;
+        }
+
+        .btn-outline-secondary:hover {
+            background-color: var(--secondary-color);
+            border-color: var((--secondary-color);
+            }
+
+            code {
+                background: #f3f3f3;
+                padding: 0.2rem 0.4rem;
+                border-radius: 4px;
+                font-family: 'Courier New', Courier, monospace;
+            }
+
+            pre {
+                background: #f8f9fa;
+                padding: 1rem;
+                border-radius: 8px;
+                border-left: 4px solid var(--primary-color);
+            }
+
+            .video-container {
+                border-radius: 10px;
+                overflow: hidden;
+                box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            }
+
+            footer {
+                background-color: var(--dark-color);
+                color: white;
+                padding: 2rem 0;
+                margin-top: 3rem;
+            }
+    </style>
+</head>
+
+<body>
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-8">
+                    <h1 class="header-title">VHSMarker</h1>
+                    <h2 class="header-subtitle">A High-Precision Annotation Tool for Canine Cardiac key point Detection
+                        and VHS Estimation</h2>
+                    <div class="mt-4">
+                        <a href="https://github.com/gen-ai-research/dog-vhs" target="_blank"
+                            class="btn btn-outline-secondary me-2">
+                            <i class="fas fa-code me-1"></i> Source Code
+                        </a>
+                         <a href="https://huggingface.co/datasets/gen-ai-researcher/vhs_dogheart_db" target="_blank"
+                            class="btn btn-outline-secondary">
+                            🤗 Download from Hugging Face
+                        </a>
+						<a href="https://zenodo.org/records/16608263" target="_blank"
+                            class="btn btn-outline-secondary">
+                            <i class="fas fa-database me-1"></i> Download from Zenodo
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-4 d-none d-lg-block">
+                    <img src="assets/resources/imgs/Main Screen.png" alt="VHSMarker Interface" class="img-fluid rounded shadow">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-left">
+                    <h2 class="section-title">Abstract</h2>
+                    <p>We present VHSMarker, a web-based human computer interaction annotation tool designed to
+                        streamline the creation of high-quality ground truth data for canine cardiac analysis. VHSMarker
+                        provides an intuitive interface for precise labeling of six critical cardiac key points in dog
+                        heart X-ray images, significantly reducing annotation time and improving consistency. It also
+                        supports real-time vertebral heart score (VHS) calculation as points are placed, enables
+                        predictions using pretrained models, and allows side-by-side comparison of ground truth and
+                        model predictions for performance evaluation. In addition, we introduce a canine cardiac key
+                        point (CCK) dataset, a meticulously curated collection of annotated 21,465 X-ray images for
+                        accurate VHS prediction. To facilitate the labeling, we developed MambaVHS (Mamba-Enhanced
+                        Vertebral Heart Score Detection), a custom model that integrates Mamba blocks for efficient
+                        long-range sequence modeling alongside complementary convolutional components for precise
+                        spatial feature extraction. Together, this comprehensive framework sets a new benchmark for
+                        canine cardiology research. </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Three Key Novelties -->
+    <section class="py-5">
+        <div class="container">
+            <h2 class="section-title text-left">Key Contributions</h2>
+            <div class="row g-4">
+                <!-- Dataset Card -->
+                <div class="col-md-4">
+                    <div class="card novelty-card h-100">
+                        <div class="card-body text-center p-4">
+                            <div class="novelty-icon">
+                                <i class="fas fa-database"></i>
+                            </div>
+                            <h3 class="h4">CCK Dataset</h3>
+                            <p class="card-text">21,465 annotated canine thoracic radiographs with comprehensive
+                                anatomical coverage and clinical diversity.</p>
+                            <ul class="text-start ps-3">
+                                <li>Diverse breeds and conditions</li>
+                                <li>Standardized annotations</li>
+                                <li>Rich metadata</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!-- Tool Card -->
+                <div class="col-md-4">
+                    <div class="card novelty-card h-100">
+                        <div class="card-body text-center p-4">
+                            <div class="novelty-icon">
+                                <i class="fas fa-desktop"></i>
+                            </div>
+                            <h3 class="h4">VHSMarker Tool</h3>
+                            <p class="card-text">Web-based annotation platform for precise labeling of canine cardiac
+                                keypoints with real-time VHS calculation and model comparison capabilities.</p>
+                            <ul class="text-start ps-3">
+                                <li>Intuitive human-computer interface</li>
+                                <li>Six anatomical keypoint labeling</li>
+                                <li>Automated data export</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!-- Model Card -->
+                <div class="col-md-4">
+                    <div class="card novelty-card h-100">
+                        <div class="card-body text-center p-4">
+                            <div class="novelty-icon">
+                                <i class="fas fa-gears"></i>
+                            </div>
+                            <h3 class="h4">MambaVHS Model</h3>
+                            <p class="card-text">Hybrid architecture combining Mamba blocks for sequence modeling with
+                                convolutional networks for spatial feature extraction.</p>
+                            <ul class="text-start ps-3">
+                                <li>State-of-the-art accuracy</li>
+                                <li>Efficient long-range modeling</li>
+                                <li>Real-time inference</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Detailed Sections -->
+    <!-- Dataset Section -->
+    <section class="py-5 bg-white">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6">
+                    <h2 class="section-title">Canine Cardiac Keypoint (CCK) Dataset</h2>
+                    <p>The CCK dataset is a meticulously curated collection of 21,465 annotated canine thoracic
+                        radiographs, capturing a diverse range of anatomical variations and clinical conditions.</p>
+
+                    <div class="feature-box">
+                        <h4><i class="fas fa-check-circle text-success me-2"></i>Dataset Features</h4>
+                        <ul>
+                            <li><strong>21,465 images</strong> with six precisely annotated cardiac keypoints each</li>
+                            <li>Standardized <strong>lateral radiographs only</strong> for consistent VHS measurement
+                            </li>
+                            <!-- <li>Comprehensive metadata including breed, weight, and clinical status</li> -->
+                            <li>Multiple export formats (JSON, CSV, .mat) for flexibility</li>
+                        </ul>
+                    </div>
+                    <div class="feature-box">
+                        <h5>Demographic Information</h5>
+                        <div class="row">
+                            <!-- Sex Distribution Table -->
+                            <div class="col-md-6">
+                                <table class="table table-bordered table-striped table-sm">
+                                    <caption><small>Table 1: Sex Distribution</small></caption>
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>Sex</th>
+                                            <th>Count</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Female</td>
+                                            <td>7941</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Male</td>
+                                            <td>4395</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Unknown</td>
+                                            <td>49</td>
+                                        </tr>
+										<tr>
+                                            <td><b>Total</b></td>
+                                            <td><b>12385</b></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <!-- Age Group Distribution Table -->
+                            <div class="col-md-6">
+                                <table class="table table-bordered table-striped table-sm">
+                                    <caption><small>Table 2: Age Group Distribution</small></caption>
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>Age Group (years)</th>
+                                            <th>Count</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>0 to 5</td>
+                                            <td>2961</td>
+                                        </tr>
+                                        <tr>
+                                            <td>6 to 11</td>
+                                            <td>6272</td>
+                                        </tr>
+                                        <tr>
+                                            <td>12 to 17</td>
+                                            <td>2827</td>
+                                        </tr>
+                                        <tr>
+                                            <td>18 to 30</td>
+                                            <td>86</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Unknown</td>
+                                            <td>239</td>
+                                        </tr>
+										<tr>
+                                            <td><b>Total</b></td>
+                                            <td><b>12385</b></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+
+
+                    </div>
+
+
+                </div>
+
+                <div class="col-lg-6">
+                    <div class="feature-box h-2">
+                        <h6 class="mt-1">CCK Dataset Sample Images</h6>
+                        <img src="assets/resources/imgs/dspreview.png" alt="CCK Dataset Sample Images"
+                            class="img-fluid rounded mb-3">
+                        <div class="text-center">
+                            <p class="small text-muted">Sample radiographs from the CCK dataset with Annotations</p>
+                        </div>
+                    </div>
+                    <div class="feature-box h-2">
+                        
+                        <div class="table-responsive">
+                            <table class="table table-bordered">
+                                <caption><small>Table 3: Dataset Distribution</small></caption>
+                                <thead class="table-dark">
+                                    <tr>
+                                        <th>Split</th>
+                                        <th>Number of Images</th>
+                                        <th>Percentage</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Training</td>
+                                        <td>15,026</td>
+                                        <td>70%</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Validation</td>
+                                        <td>2,155</td>
+                                        <td>10%</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Testing</td>
+                                        <td>4,275</td>
+                                        <td>20%</td>
+                                    </tr>
+                                    <tr class="table-secondary fw-bold">
+                                        <td>Total</td>
+                                        <td>21,465</td>
+                                        <td>100%</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <!-- Breed Information-->
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="feature-box">
+                        <h6>Breed Information</h6>
+                        <p class="lead">The CCK dataset includes a diverse range of breeds, ensuring comprehensive coverage of canine cardiac anatomy.</p>
+                        <div class="table-container">
+                            
+                            <!-- Start first table -->
+                            <table class="breed-table">
+                                <tr class="breed-tr"><th class="breed-th">#</th><th class="breed-th">Breed</th><th class="breed-th">Count</th></tr>
+                                <tr class="breed-tr"><td class="breed-td breed-no">1</td><td class="breed-td"> Mixed Dog </td><td class="breed-td"> 1256 </td></tr>
+                                <tr class="breed-tr"><td class="breed-td breed-no">2</td><td class="breed-td"> Labrador Retriever </td><td class="breed-td"> 479 </td></tr>
+                                <tr class="breed-tr"><td class="breed-td breed-no">3</td><td class="breed-td"> Golden Retriever </td><td class="breed-td"> 191 </td></tr>
+                                <tr class="breed-tr"><td class="breed-td breed-no">4</td><td class="breed-td"> German Shepherd </td><td class="breed-td"> 164 </td></tr>
+                                <tr class="breed-tr"><td class="breed-td breed-no">5</td><td class="breed-td"> Chihuahua </td><td class="breed-td"> 100 </td></tr>
+                                <tr class="breed-tr"><td class="breed-td breed-no">6</td><td class="breed-td"> Boxer </td><td class="breed-td"> 79 </td></tr>
+                                <tr class="breed-tr"><td class="breed-td breed-no">7</td><td class="breed-td"> Shih Tzu </td><td class="breed-td"> 77 </td></tr>
+                                <tr class="breed-tr"><td class="breed-td breed-no">8</td><td class="breed-td"> Yorkshire Terrier </td><td class="breed-td"> 77 </td></tr>
+                                <tr class="breed-tr"><td class="breed-td breed-no">9</td><td class="breed-td"> French Bulldog </td><td class="breed-td"> 76 </td></tr>
+                                <tr class="breed-tr"><td class="breed-td breed-no">10</td><td class="breed-td"> English Bulldog </td><td class="breed-td"> 72 </td></tr>
+                                <tr class="breed-tr"><td class="breed-td breed-no">11</td><td class="breed-td"> Canine, Nos </td><td class="breed-td"> 67 </td></tr>
+                                <tr class="breed-tr"><td class="breed-td breed-no">12</td><td class="breed-td"> Miniature Poodle </td><td class="breed-td"> 62 </td></tr>
+                                <tr class="breed-tr"><td class="breed-td breed-no">13</td><td class="breed-td"> Siberian Husky </td><td class="breed-td"> 61 </td></tr>
+                                <tr class="breed-tr"><td class="breed-td breed-no">14</td><td class="breed-td"> Border Collie </td><td class="breed-td"> 57 </td></tr>
+                                <tr class="breed-tr"><td class="breed-td breed-no">15</td><td class="breed-td"> Beagle Hound </td><td class="breed-td"> 56 </td></tr>
+                                <tr class="breed-tr"><td class="breed-td breed-no">16</td><td class="breed-td"> Pomeranian </td><td class="breed-td"> 52 </td></tr>
+                                <tr class="breed-tr"><td class="breed-td breed-no">17</td><td class="breed-td"> Cavalier King Chas S… </td><td class="breed-td"> 51 </td></tr>
+                                <tr class="breed-tr"><td class="breed-td breed-no">18</td><td class="breed-td"> Pug </td><td class="breed-td"> 48 </td></tr>
+                                <tr class="breed-tr"><td class="breed-td breed-no">19</td><td class="breed-td"> Boston Terrier </td><td class="breed-td"> 44 </td></tr>
+                                <tr class="breed-tr"><td class="breed-td breed-no">20</td><td class="breed-td"> Jack Russell Terrier </td><td class="breed-td"> 44 </td></tr>
+                                <tr class="breed-tr"><td class="breed-td breed-no">21</td><td class="breed-td"> Maltese </td><td class="breed-td"> 44 </td></tr>
+                                <tr class="breed-tr"><td class="breed-td breed-no">22</td><td class="breed-td"> Australian Shepherd </td><td class="breed-td"> 42 </td></tr>
+                                <tr class="breed-tr"><td class="breed-td breed-no">23</td><td class="breed-td"> Shetland Sheepdog </td><td class="breed-td"> 42 </td></tr>
+                                <tr class="breed-tr"><td class="breed-td breed-no">24</td><td class="breed-td"> Rottweiler </td><td class="breed-td"> 41 </td></tr>
+                                <tr class="breed-tr"><td class="breed-td breed-no">25</td><td class="breed-td"> English Cocker Spani… </td><td class="breed-td"> 35 </td></tr>
+                                <tr class="breed-tr"><td class="breed-td breed-no">26</td><td class="breed-td"> Great Dane </td><td class="breed-td"> 34 </td></tr>
+                                <tr class="breed-tr"><td class="breed-td breed-no">27</td><td class="breed-td"> Bernese Mountain Dog </td><td class="breed-td"> 32 </td></tr>
+                                <tr class="breed-tr"><td class="breed-td breed-no">28</td><td class="breed-td"> Miniature Schnauzer </td><td class="breed-td"> 32 </td></tr>
+                                <tr class="breed-tr"><td class="breed-td breed-no">29</td><td class="breed-td"> Cock-A-Poo </td><td class="breed-td"> 31 </td></tr>
+                                <tr class="breed-tr"><td class="breed-td breed-no">30</td><td class="breed-td"> Irish Wolfhound </td><td class="breed-td"> 9 </td></tr>
+                                <tr class="breed-tr"><td class="breed-td breed-no">31</td><td class="breed-td"> Swiss Mountain Dog </td><td class="breed-td"> 4 </td></tr>
+                                <tr class="breed-tr"><td class="breed-td breed-no">32</td><td class="breed-td"> English Shepherd </td><td class="breed-td"> 4 </td></tr>
+                                <tr class="breed-tr"><td class="breed-td breed-no">33</td><td class="breed-td"> Nova Scotia Duck Tol… </td><td class="breed-td"> 4 </td></tr>
+                                <tr class="breed-tr"><td class="breed-td breed-no">34</td><td class="breed-td"> Saluki </td><td class="breed-td"> 4 </td></tr>
+                                <tr class="breed-tr"><td class="breed-td breed-no">35</td><td class="breed-td"> Italian Greyhound </td><td class="breed-td"> 4 </td></tr>
+                                <tr class="breed-tr"><td class="breed-td breed-no">36</td><td class="breed-td"> Flat-Coated Retriever </td><td class="breed-td"> 4 </td></tr>
+                                <tr class="breed-tr"><td class="breed-td breed-no">37</td><td class="breed-td"> Shiba Inu </td><td class="breed-td"> 4 </td></tr>
+
+
+
+                            </table>
+
+                            <!-- Start second table -->
+                            <table class="breed-table">
+                                <tr class="breed-tr"><th class="breed-th">#</th><th class="breed-th">Breed</th><th class="breed-th">Count</th></tr>
+                                <tr class="breed-tr"><td class="breed-td breed-no">38</td><td class="breed-td">Smooth Minature Dach… </td><td class="breed-td"> 23 </td></tr>
+                                <tr class="breed-tr"><td class="breed-td breed-no">39</td><td class="breed-td"> English Setter </td><td class="breed-td"> 21 </td></tr>
+                                <tr class="breed-tr"><td class="breed-td breed-no">40</td><td class="breed-td"> Australian Cattle Dog </td><td class="breed-td"> 20 </td></tr>
+                                <tr class="breed-tr"><td class="breed-td breed-no">41</td><td class="breed-td"> Toy Poodle </td><td class="breed-td"> 20 </td></tr>
+                                <tr class="breed-tr"><td class="breed-td breed-no">42</td><td class="breed-td"> Chinese Sharpei </td><td class="breed-td"> 20 </td></tr>
+                                <tr class="breed-tr"><td class="breed-td breed-no">43</td><td class="breed-td"> Bichon Frise </td><td class="breed-td"> 19 </td></tr>
+                                <tr class="breed-tr"><td class="breed-td breed-no">44</td><td class="breed-td"> American Bulldog </td><td class="breed-td"> 18 </td></tr>
+                                <tr class="breed-tr"><td class="breed-td breed-no">45</td><td class="breed-td"> Pembroke Welsh Corgi </td><td class="breed-td"> 18 </td></tr>
+                                <tr class="breed-tr"><td class="breed-td breed-no">46</td><td class="breed-td"> West Highland Terrier </td><td class="breed-td"> 18 </td></tr>
+                                <tr class="breed-tr"><td class="breed-td breed-no">47</td><td class="breed-td"> Rhodesian Ridgeback </td><td class="breed-td"> 18 </td></tr>
+                                <tr class="breed-tr"><td class="breed-td breed-no">48</td><td class="breed-td"> English Springer Spa… </td><td class="breed-td"> 17 </td></tr>
+                                <tr class="breed-tr"><td class="breed-td breed-no">49</td><td class="breed-td"> American Staffordshi… </td><td class="breed-td"> 17 </td></tr>
+                                <tr class="breed-tr"><td class="breed-td breed-no">50</td><td class="breed-td"> Miniature Pinscher </td><td class="breed-td"> 16 </td></tr>
+                                <tr class="breed-tr"><td class="breed-td breed-no">51</td><td class="breed-td"> Brittany Spaniel </td><td class="breed-td"> 16 </td></tr>
+                                <tr class="breed-tr"><td class="breed-td breed-no">52</td><td class="breed-td"> Long-Haired Std Dach… </td><td class="breed-td"> 14 </td></tr>
+                                <tr class="breed-tr"><td class="breed-td breed-no">53</td><td class="breed-td"> German Short-Haired … </td><td class="breed-td"> 14 </td></tr>
+                                <tr class="breed-tr"><td class="breed-td breed-no">54</td><td class="breed-td"> Terrier, Nos </td><td class="breed-td"> 14 </td></tr>
+                                <tr class="breed-tr"><td class="breed-td breed-no">55</td><td class="breed-td"> Basset Hound </td><td class="breed-td"> 13 </td></tr>
+                                <tr class="breed-tr"><td class="breed-td breed-no">56</td><td class="breed-td"> Newfoundland </td><td class="breed-td"> 13 </td></tr>
+                                <tr class="breed-tr"><td class="breed-td breed-no">57</td><td class="breed-td"> Bull Mastiff </td><td class="breed-td"> 12 </td></tr>
+                                <tr class="breed-tr"><td class="breed-td breed-no">58</td><td class="breed-td"> Long-Haired Mini Dac… </td><td class="breed-td"> 12 </td></tr>
+                                <tr class="breed-tr"><td class="breed-td breed-no">59</td><td class="breed-td"> Bulldog, Nos </td><td class="breed-td"> 12 </td></tr>
+                                <tr class="breed-tr"><td class="breed-td breed-no">60</td><td class="breed-td"> Belgian Malinois </td><td class="breed-td"> 12 </td></tr>
+                                <tr class="breed-tr"><td class="breed-td breed-no">61</td><td class="breed-td"> Lhasa Apso </td><td class="breed-td"> 11 </td></tr>
+                                <tr class="breed-tr"><td class="breed-td breed-no">62</td><td class="breed-td"> Greyhound </td><td class="breed-td"> 11 </td></tr>
+                                <tr class="breed-tr"><td class="breed-td breed-no">63</td><td class="breed-td"> Bull Terrier </td><td class="breed-td"> 10 </td></tr>
+                                <tr class="breed-tr"><td class="breed-td breed-no">64</td><td class="breed-td"> Irish Setter </td><td class="breed-td"> 10 </td></tr>
+                                <tr class="breed-tr"><td class="breed-td breed-no">65</td><td class="breed-td"> Catahula Leopard Dog </td><td class="breed-td"> 9 </td></tr>
+                                <tr class="breed-tr"><td class="breed-td breed-no">66</td><td class="breed-td"> Saint Bernard </td><td class="breed-td"> 9 </td></tr>
+                                <tr class="breed-tr"><td class="breed-td breed-no">67</td><td class="breed-td"> Treeing Walker Coonh… </td><td class="breed-td"> 4 </td></tr>
+                                <tr class="breed-tr"><td class="breed-td breed-no">68</td> <td class="breed-td">Bloodhound </td><td class="breed-td"> 3 </td></tr>
+                                <tr class="breed-tr"><td class="breed-td breed-no">69</td> <td class="breed-td">Chinese Crested </td><td class="breed-td"> 3 </td></tr>
+                                <tr class="breed-tr"><td class="breed-td breed-no">70</td><td class="breed-td"> American Foxhound </td><td class="breed-td"> 3 </td></tr>
+                                <tr class="breed-tr"><td class="breed-td breed-no">71</td><td class="breed-td"> Tibetan Terrier </td><td class="breed-td"> 3 </td></tr>
+                                <tr class="breed-tr"><td class="breed-td breed-no">72</td><td class="breed-td"> Neapolitan Mastiff </td><td class="breed-td"> 3 </td></tr>
+                                <tr class="breed-tr"><td class="breed-td breed-no">73</td> <td class="breed-td">Australian Heeler </td><td class="breed-td"> 2 </td></tr>
+                            </table>
+
+                            <!-- Start third table -->
+                            <table class="breed-table">
+                                <tr class="breed-tr"><th class="breed-th">#</th><th class="breed-th">Breed</th><th class="breed-th">Count</th></tr>
+                                <tr class="breed-tr"><td class="breed-td breed-no">74</td><td class="breed-td">Red Bone Hound </td><td class="breed-td">8 </td></tr>
+                                <tr class="breed-tr"><td class="breed-td breed-no">75</td><td class="breed-td">Samoyed </td><td class="breed-td">7 </td></tr>
+                                <tr class="breed-tr"><td class="breed-td breed-no">76</td><td class="breed-td">Chesapeake Bay Retri… </td><td class="breed-td">7 </td></tr>
+                                <tr class="breed-tr"><td class="breed-td breed-no">77</td><td class="breed-td">Vizsla </td><td class="breed-td">7 </td></tr>
+                                <tr class="breed-tr"><td class="breed-td breed-no">78</td><td class="breed-td">Smooth Standard Dach… </td><td class="breed-td">7 </td></tr>
+                                <tr class="breed-tr"><td class="breed-td breed-no">79</td><td class="breed-td">American Pit Bull Te… </td><td class="breed-td">7 </td></tr>
+                                <tr class="breed-tr"><td class="breed-td breed-no">80</td><td class="breed-td">Whippet </td><td class="breed-td">7 </td></tr>
+                                <tr class="breed-tr"><td class="breed-td breed-no">81</td><td class="breed-td">Akita </td><td class="breed-td">6 </td></tr>
+                                <tr class="breed-tr"><td class="breed-td breed-no">82</td><td class="breed-td">Leonberger </td><td class="breed-td">6 </td></tr>
+                                <tr class="breed-tr"><td class="breed-td breed-no">83</td><td class="breed-td">Schipperke </td><td class="breed-td">6 </td></tr>
+                                <tr class="breed-tr"><td class="breed-td breed-no">84</td><td class="breed-td">American Eskimo Dog </td><td class="breed-td">6 </td></tr>
+                                <tr class="breed-tr"><td class="breed-td breed-no">85</td><td class="breed-td">Mexican Hairless </td><td class="breed-td">6 </td></tr>
+                                <tr class="breed-tr"><td class="breed-td breed-no">86</td><td class="breed-td">Coonhound </td><td class="breed-td">5 </td></tr>
+                                <tr class="breed-tr"><td class="breed-td breed-no">87</td><td class="breed-td">English Mastiff </td><td class="breed-td">5 </td></tr>
+                                <tr class="breed-tr"><td class="breed-td breed-no">88</td><td class="breed-td">Silky Terrier </td><td class="breed-td">5 </td></tr>
+                                <tr class="breed-tr"><td class="breed-td breed-no">89</td><td class="breed-td">German Wire-Haired P… </td><td class="breed-td">5 </td></tr>
+                                <tr class="breed-tr"><td class="breed-td breed-no">90</td><td class="breed-td">Weimaraner </td><td class="breed-td">5 </td></tr>
+                                <tr class="breed-tr"><td class="breed-td breed-no">91</td><td class="breed-td">Papillon </td><td class="breed-td">5 </td></tr>
+                                <tr class="breed-tr"><td class="breed-td breed-no">92</td><td class="breed-td">Scottish Terrier </td><td class="breed-td">5 </td></tr>
+                                <tr class="breed-tr"><td class="breed-td breed-no">93</td><td class="breed-td">Staffordshire Bull T… </td><td class="breed-td">5 </td></tr>
+                                <tr class="breed-tr"><td class="breed-td breed-no">94</td><td class="breed-td">Mastiff, Nos </td><td class="breed-td">5 </td></tr>
+                                <tr class="breed-tr"><td class="breed-td breed-no">95</td><td class="breed-td">Hound, Nos </td><td class="breed-td">5 </td></tr>
+                                <tr class="breed-tr"><td class="breed-td breed-no">96</td><td class="breed-td">Keeshond </td><td class="breed-td">5 </td></tr>
+                                <tr class="breed-tr"><td class="breed-td breed-no">97</td><td class="breed-td">Giant Schnauzer </td><td class="breed-td">4 </td></tr>
+                                <tr class="breed-tr"><td class="breed-td breed-no">98</td><td class="breed-td">Airedale Terrier </td><td class="breed-td">4 </td></tr>
+                                <tr class="breed-tr"><td class="breed-td breed-no">99</td><td class="breed-td">Coton De Tulear </td><td class="breed-td">4 </td></tr>
+                                <tr class="breed-tr"><td class="breed-td breed-no">100</td><td class="breed-td">Cocker Spaniel, Nos </td><td class="breed-td">9 </td></tr>
+                                <tr class="breed-tr"><td class="breed-td breed-no">101</td><td class="breed-td">Cairn Terrier </td><td class="breed-td">9 </td></tr>
+                                <tr class="breed-tr"><td class="breed-td breed-no">102</td><td class="breed-td">Rat Terrier </td><td class="breed-td">9 </td></tr>
+                                <tr class="breed-tr"><td class="breed-td breed-no">103</td><td class="breed-td">Spinone Italiano </td><td class="breed-td">2 </td></tr>
+                                <tr class="breed-tr"><td class="breed-td breed-no">104</td><td class="breed-td">Briard </td><td class="breed-td">2 </td></tr>
+                                <tr class="breed-tr"><td class="breed-td breed-no">105</td><td class="breed-td">Old English Sheepdog </td><td class="breed-td">2 </td></tr>
+                                <tr class="breed-tr"><td class="breed-td breed-no">106</td><td class="breed-td">Borzoi </td><td class="breed-td">2 </td></tr>
+                                <tr class="breed-tr"><td class="breed-td breed-no">107</td><td class="breed-td">Alaskan Malamute </td><td class="breed-td">2 </td></tr>
+                                <tr class="breed-tr"><td class="breed-td breed-no">108</td><td class="breed-td">Norwegian Elkhound </td><td class="breed-td">2 </td></tr>
+                                <tr class="breed-tr"><td class="breed-td breed-no">109</td><td class="breed-td">German Long-Haired P… </td><td class="breed-td">2 </td></tr>
+                                <tr class="breed-tr"><td class="breed-td breed-no">110</td><td class="breed-td">Affenpinscher </td><td class="breed-td">2 </td></tr>
+
+
+                            </table>
+
+                            <!-- Start fourth table -->
+                            <table class="breed-table">
+                                <tr class="breed-tr"><th class="breed-th">#</th><th class="breed-th">Breed</th><th class="breed-th">Count</th></tr>
+                               <tr class="breed-tr"><td class="breed-td breed-no">111</td><td class="breed-td">Toy Manchester Terri… </td><td class="breed-td">2 </td></tr>
+<tr class="breed-tr"><td class="breed-td breed-no">112</td><td class="breed-td">Clumber Spaniel </td><td class="breed-td">2 </td></tr>
+<tr class="breed-tr"><td class="breed-td breed-no">113</td><td class="breed-td">Standard Schnauzer </td><td class="breed-td">2 </td></tr>
+<tr class="breed-tr"><td class="breed-td breed-no">114</td><td class="breed-td">Irish Water Spaniel </td><td class="breed-td">1 </td></tr>
+<tr class="breed-tr"><td class="breed-td breed-no">115</td><td class="breed-td">Shiloh Shepherd </td><td class="breed-td">1 </td></tr>
+<tr class="breed-tr"><td class="breed-td breed-no">116</td><td class="breed-td">Cardigan Welsh Corgi </td><td class="breed-td">1 </td></tr>
+<tr class="breed-tr"><td class="breed-td breed-no">117</td><td class="breed-td">American Bully </td><td class="breed-td">1 </td></tr>
+<tr class="breed-tr"><td class="breed-td breed-no">118</td><td class="breed-td">Japanese Chin </td><td class="breed-td">1 </td></tr>
+<tr class="breed-tr"><td class="breed-td breed-no">119</td><td class="breed-td">English Coonhound </td><td class="breed-td">1 </td></tr>
+<tr class="breed-tr"><td class="breed-td breed-no">120</td><td class="breed-td">Border Terrier </td><td class="breed-td">1 </td></tr>
+<tr class="breed-tr"><td class="breed-td breed-no">121</td><td class="breed-td">Setter, Nos </td><td class="breed-td">1 </td></tr>
+<tr class="breed-tr"><td class="breed-td breed-no">122</td><td class="breed-td">Tibetan Spaniel </td><td class="breed-td">1 </td></tr>
+<tr class="breed-tr"><td class="breed-td breed-no">123</td><td class="breed-td">American Cocker Span… </td><td class="breed-td">1 </td></tr>
+<tr class="breed-tr"><td class="breed-td breed-no">124</td><td class="breed-td">Australian Terrier </td><td class="breed-td">1 </td></tr>
+<tr class="breed-tr"><td class="breed-td breed-no">125</td><td class="breed-td">Welsh Terrier </td><td class="breed-td">1 </td></tr>
+<tr class="breed-tr"><td class="breed-td breed-no">126</td><td class="breed-td">Norfolk Terrier </td><td class="breed-td">1 </td></tr>
+<tr class="breed-tr"><td class="breed-td breed-no">127</td><td class="breed-td">Dalmatian </td><td class="breed-td">1 </td></tr>
+<tr class="breed-tr"><td class="breed-td breed-no">128</td><td class="breed-td">Pharaoh Hound </td><td class="breed-td">1 </td></tr>
+<tr class="breed-tr"><td class="breed-td breed-no">129</td><td class="breed-td">Springer Spaniel </td><td class="breed-td">1 </td></tr>
+<tr class="breed-tr"><td class="breed-td breed-no">130</td><td class="breed-td">Silken Windsprite </td><td class="breed-td">1 </td></tr>
+<tr class="breed-tr"><td class="breed-td breed-no">131</td><td class="breed-td">Wirehaired Standard … </td><td class="breed-td">1 </td></tr>
+<tr class="breed-tr"><td class="breed-td breed-no">132</td><td class="breed-td">Retriever, Nos </td><td class="breed-td">1 </td></tr>
+<tr class="breed-tr"><td class="breed-td breed-no">133</td><td class="breed-td">Soft-Coated Wheaten … </td><td class="breed-td">1 </td></tr>
+<tr class="breed-tr"><td class="breed-td breed-no">134</td><td class="breed-td">Maremma Sheepdog </td><td class="breed-td">1 </td></tr>
+<tr class="breed-tr"><td class="breed-td breed-no">135</td><td class="breed-td">Standard Poodle </td><td class="breed-td">31 </td></tr>
+<tr class="breed-tr"><td class="breed-td breed-no">136</td><td class="breed-td">Havanese </td><td class="breed-td">30 </td></tr>
+<tr class="breed-tr"><td class="breed-td breed-no">137</td><td class="breed-td">Dachshund, Nos </td><td class="breed-td">28 </td></tr>
+<tr class="breed-tr"><td class="breed-td breed-no">138</td><td class="breed-td">Collie, Nos </td><td class="breed-td">9 </td></tr>
+<tr class="breed-tr"><td class="breed-td breed-no">139</td><td class="breed-td">Peke-A-Poo </td><td class="breed-td">2 </td></tr>
+<tr class="breed-tr"><td class="breed-td breed-no">140</td><td class="breed-td">Anatolian Shepherd </td><td class="breed-td">2 </td></tr>
+<tr class="breed-tr"><td class="breed-td breed-no">141</td><td class="breed-td">Wirehaired Pointing … </td><td class="breed-td">2 </td></tr>
+<tr class="breed-tr"><td class="breed-td breed-no">142</td><td class="breed-td">Doberman Pinscher </td><td class="breed-td">26 </td></tr>
+<tr class="breed-tr"><td class="breed-td breed-no">143</td><td class="breed-td">Labradoodle </td><td class="breed-td">26 </td></tr>
+<tr class="breed-tr"><td class="breed-td breed-no">144</td><td class="breed-td">Great Pyrenees </td><td class="breed-td">24 </td></tr>
+<tr class="breed-tr"><td class="breed-td breed-no">145</td><td class="breed-td">Cane Corso </td><td class="breed-td">8 </td></tr>
+<tr class="breed-tr"><td class="breed-td breed-no">146</td><td class="breed-td">Unknown </td><td class="breed-td">8039 </td></tr>
+<tr class="breed-tr"><td class="breed-td">&nbsp;</td><td class="breed-td breed-no"><b>Total</b></td><td class="breed-td"><b>12385</b></td></tr>
+                            </table>
+
+                            <caption><small>Table 4: Breed-wise distribution of annotated canine X-ray images in the CCK dataset, detailing the number of samples per breed for demographic and diversity analysis.</small></caption>
+                        </div>
+                    </div>
+
+
+
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <a href="https://huggingface.co/datasets/gen-ai-researcher/vhs_dogheart_db" target="_blank"
+                            class="btn btn-outline-secondary">
+                            🤗 Download from Hugging Face
+                        </a>
+						<a href="https://zenodo.org/records/16608263" target="_blank"
+                            class="btn btn-outline-secondary">
+                            <i class="fas fa-database me-1"></i> Download from Zenodo
+                        </a>
+
+                </div>
+            </div>
+        </div>
+        </div>
+    </section>
+
+    <!-- Demo Video Section -->
+    <!-- Video Demo Section -->
+    <section class="py-5 bg-white">
+        <div class="container">
+            <h2 class="section-title text-left">VHSMarker Annotation Tool</h2>
+            <p class="lead">A specialized web-based platform for precise canine cardiac analysis, combining clinical
+                expertise with advanced computer vision capabilities.</p>
+
+            <div class="feature-box">
+                <!-- Tech Stack -->
+                <div class="mb-4">
+                    <h4><i class="fas fa-layer-group text-primary me-2"></i>Technical Architecture</h4>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <ul class="fa-ul">
+                                <li><span class="fa-li"><i
+                                            class="fas fa-server text-info"></i></span><strong>Backend:</strong> Flask
+                                    (Python) with OpenCV for image processing</li>
+                                <li><span class="fa-li"><i
+                                            class="fas fa-window-maximize text-info"></i></span><strong>Frontend:</strong>
+                                    HTML5 Canvas + JavaScript for responsive annotation</li>
+                                <li><span class="fa-li"><i
+                                            class="fas fa-network-wired text-info"></i></span><strong>Real-time
+                                        API:</strong> Real-Time communication for instant VHS calculation</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <ul class="fa-ul">
+                                <!-- <li><span class="fa-li"><i class="fas fa-database text-info"></i></span><strong>Data
+                                        Pipeline:</strong> DICOM/JPEG support with EXIF metadata extraction</li> -->
+                                <li><span class="fa-li"><i class="fas fa-cogs text-info"></i></span><strong>ML
+                                        Integration:</strong> ONNX runtime for model inference</li>
+                                <li><span class="fa-li"><i
+                                            class="fas fa-history text-info"></i></span><strong>Versioning:</strong>
+                                    Git-like annotation history tracking</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Core Features -->
+                <p class="lead mb-4">
+                    VHSMarker revolutionizes canine cardiac analysis through three core innovations: <strong>Smart
+                        Annotation</strong> enables precise labeling of six anatomical keypoints (cardiac apex, tracheal
+                    bifurcation, and vertebral reference points) with pixel-level accuracy; <strong>Real-Time
+                        Analysis</strong> instantly computes the Vertebral Heart Score using the formula
+                    <code>VHS = 6 × (AB + CD)/EF</code>, where AB is the long axis (cardiac apex to tracheal
+                    bifurcation), CD is the short axis (perpendicular width), and EF is the vertebral reference length;
+                    <!-- and <strong>Clinical Workflow</strong> integration featuring DICOM metadata processing and secure
+                    data export.  -->
+                    The tool's hybrid web architecture combines Flask backend processing with HTML5 Canvas frontend
+                    interactivity, delivering 10-12 second annotation times while maintaining sub-pixel precision in
+                    measurements.
+                </p>
+                <!-- Video Demo -->
+                <h4 class="mt-4"><i class="fas fa-play-circle text-danger me-2"></i>Tool Demonstration</h4>
+                <div class="row justify-content-center">
+                    <div class="col-lg-10"> <!-- Increased width for better visibility -->
+                        <div class="ratio ratio-16x9 video-container shadow-lg rounded overflow-hidden">
+                            <video controls>
+                                <source src="assets/VHS.mp4" type="video/mp4">
+                                Your browser does not support HTML5 video.
+                            </video>
+                        </div>
+                        <p class="text-muted small mt-2">Video 1 : Demonstrating: Keypoint placement (A-F), real-time VHS
+                            calculation, and model prediction comparison</p>
+                    </div>
+                </div>
+				<div class="row justify-content-center">
+                    <div class="col-lg-10"> <!-- Increased width for better visibility -->
+                        <div class="ratio ratio-16x9 video-container shadow-lg rounded overflow-hidden">
+                            <video controls>
+                                <source src="assets/Tool_2.mp4" type="video/mp4">
+                                Your browser does not support HTML5 video.
+                            </video>
+                        </div>
+                        <p class="text-muted small mt-2">Video 2 : Demonstrating: Brightness / Contrast</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- MambaVHS Model Section-->
+    <section>
+        <div class="container">
+            <h2 class="section-title text-left">MambaVHS Model</h2>
+            <p>The MambaVHS model is a hybrid architecture that combines Mamba blocks for efficient long-range
+                sequence modeling with complementary convolutional components for precise spatial feature extraction.
+                This innovative design enables the model to achieve state-of-the-art accuracy in canine cardiac key
+                point detection and VHS estimation.</p>
+
+            <div class="feature-box">
+                <h4><i class="fas fa-check-circle text-success me-2"></i>Model Features</h4>
+                <ul>
+                    <li>State-of-the-art accuracy in canine cardiac analysis</li>
+                    <li>Efficient long-range modeling with Mamba blocks</li>
+                    <li>Real-time inference capabilities</li>
+                </ul>
+            </div>
+
+            <div class="text-center">
+                <img src="assets/resources/imgs/architecture.png" alt="MambaVHS Model Architecture"
+                    class="img-fluid rounded mb-3">
+                <p class="small text-muted">Figure : MambaVHS Model Architecture</p>
+            </div>
+            <!-- Mamba Stem -->
+            <div class="feature-box mb-4">
+                <h4 class="text-secondary">
+                    <i class="fas fa-seedling me-2"></i>Mamba Stem
+                </h4>
+                <p>
+                    The initial feature extractor uses two 3×3 convolutional layers with SiLU activation and stride-2
+                    downsampling.
+                    This reduces spatial dimensions while preserving critical cardiac boundaries, forming a robust
+                    foundation
+                    for subsequent processing stages.
+                </p>
+            </div>
+
+            <!-- Mamba Stage -->
+            <div class="feature-box mb-4">
+                <h4 class="text-secondary">
+                    <i class="fas fa-network-wired me-2"></i>Mamba Stage
+                </h4>
+                <p>
+                    Four progressive stages combine residual blocks for local feature extraction with Mamba state-space
+                    layers
+                    for efficient long-range modeling. This hybrid approach captures both detailed cardiac structures
+                    and their
+                    relationships across thoracic vertebrae.
+                </p>
+            </div>
+
+            <!-- SE Layer & Head -->
+            <div class="feature-box">
+                <h4 class="text-secondary">
+                    <i class="fas fa-bullseye me-2"></i>SE Layer & Regression Head
+                </h4>
+                <p>
+                    Squeeze-Excitation layers dynamically recalibrate channel-wise features, while the final regression
+                    head
+                    uses global average pooling and fully-connected layers to predict keypoints at 42ms
+                    inference speed.
+                </p>
+            </div>
+
+
+
+
+    </section>
+
+    <!-- Results Section -->
+    <section class="py-5 bg-white">
+        <div class="container">
+            <h2 class="section-title">Experimental Results</h2>
+
+            <!-- Performance Metrics -->
+            <div class="row mb-5">
+                <div class="col-12">
+                    <p>
+                        This section presents the experimental evaluation of the VHSMarker framework for vertebral heart
+                        score (VHS) estimation from canine thoracic radiographs. The primary evaluation metric is test
+                        accuracy, based on VHS classification into three clinically significant categories: normal heart
+                        size (VHS < 8.2), borderline cardiomegaly (8.2 <=VHS <=10), and severe cardiomegaly (VHS> 10).
+                            These thresholds provide a clear basis for assessing the presence and severity of
+                            cardiomegaly, which is critical for accurate veterinary diagnostics.
+                    </p>
+
+                    <div class="feature-box">
+                        <h5 class="text-secondary"><i class="fas fa-trophy me-2"></i>Quantitative Results</h5>
+                        <p>The comprehensive evaluation demonstrates significant improvements across all metrics:</p>
+
+                        <div class="row mt-3">
+                            <div class="col-md-5">
+                                <p><strong>Key findings:</strong>
+                                    Table 5 compares the performance of various state-of-the-art models on the Canine
+                                    Cardiac key point (CCK) Dataset. Notably, the proposed MambaVHS model achieves the
+                                    highest test accuracy of <strong>91.8%</strong>, demonstrating its effectiveness in
+                                    precise key point localization and VHS estimation. This performance surpasses
+                                    several well-established baselines, including ConvNeXt (89.4%), EfficientNetB7
+                                    (88.41%), and CDA (86.4%), highlighting the advantage of Mamba-based architectures
+                                    in capturing complex anatomical structures.
+                                </p>
+                            </div>
+                            <div class="col-md-7">
+                                <img src="assets/resources/imgs/accuracy_comparison.png" alt="Accuracy Comparison Chart"
+                                    class="img-fluid rounded border">
+                                <p><caption><small>Table 5: Comparative accuracy across models
+                                    (MambaVHS vs baselines)</small></caption></p>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- Full-width Prediction Visualizations -->
+            <div class="row mb-5">
+                <div class="col-12">
+                    <div class="feature-box">
+                        <h5 class="text-secondary"><i class="fas fa-eye me-2"></i>Prediction Analysis</h5>
+                        <p>Visual comparisons from different models, including MambaVHS, ConvNeXt, EfficientNetB7, and
+                            CDA, on canine thoracic radiographs. MambaVHS consistently generates predictions closer to
+                            the actual VHS, particularly for less common cases with irregular thoracic structures and
+                            unusual imaging angles. This highlights its superior ability to capture long and short axes
+                            accurately, outperforming other models in challenging scenarios, making it a reliable choice
+                            for real-world veterinary diagnostics.</p>
+                        <p class="small text-secondary">* The ground truth is shown in <label
+                                style="color:red">Red</label>, while predictions are shown in <label
+                                style="color:yellow">Yellow</label></p>
+
+                        <div class="row mt-3">
+                            <div class="col-md-12">
+                                <h6 class="small text-center"><strong>VHS(<8.2) </strong>
+                                </h6>
+                                <img src="assets/resources/imgs/vhs_less_8_2.png" alt="Prediction Samples"
+                                    class="img-fluid rounded border mb-3">
+                                <hr />
+
+                                <h6 class="small text-center"><strong>VHS(>=8.2 and <=10) </strong>
+                                </h6>
+                                <img src="assets/resources/imgs/borderline.png" alt="Prediction Samples"
+                                    class="img-fluid rounded border mb-3">
+                                <hr />
+
+                                <h6 class="small text-center"><strong>VHS(>10) </strong></h6>
+                                <img src="assets/resources/imgs/vhs_grt_10.png" alt="Prediction Samples"
+                                    class="img-fluid rounded border mb-3">
+                                <hr />
+                            </div>
+
+                            <div class="col-md-12">
+                                <p class="mb-0">
+                                    The model demonstrates strong performance across challenging scenarios: it
+                                    accurately classifies borderline VHS values near clinical thresholds (8.2 and 10),
+                                    handles irregular anatomies including spinal deformities and thoracic abnormalities,
+                                    and processes images in 42ms (A100 GPU) for real-time clinical workflow integration.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Ablation Study -->
+            <div class="row mt-5">
+                <div class="col-12">
+                    <div class="feature-box">
+                        <h4 class="text-primary"><i class="fas fa-clipboard-check me-2"></i>Ablation Study</h4>
+                        <p>Systematic evaluation of architectural components reveals each element's contribution:</p>
+
+                        <div class="table-responsive mt-3">
+                            <table class="table table-bordered table-hover">
+                                <thead class="table-primary">
+                                    <tr>
+                                        <th>Model Variant</th>
+                                        <th class="text-center">Val Acc (%)</th>
+                                        <th class="text-center">Test Acc (%)</th>
+                                        <th>Performance Impact</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Without SE Layers</td>
+                                        <td class="text-center">88.0</td>
+                                        <td class="text-center">88.5</td>
+                                        <td>3.3% accuracy drop shows importance of channel attention</td>
+                                    </tr>
+                                    <tr>
+                                        <td>With L1 Loss Only</td>
+                                        <td class="text-center">88.4</td>
+                                        <td class="text-center">88.7</td>
+                                        <td>3.1% drop highlights VHSAwareLoss benefits</td>
+                                    </tr>
+                                    <tr>
+                                        <td>With Attention + MLP</td>
+                                        <td class="text-center">80.1</td>
+                                        <td class="text-center">84.7</td>
+                                        <td>7.1% gain from Mamba's selective scanning</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Without Residual Blocks</td>
+                                        <td class="text-center">82.0</td>
+                                        <td class="text-center">84.5</td>
+                                        <td>7.3% drop demonstrates need for skip connections</td>
+                                    </tr>
+                                    <tr class="table-success fw-bold">
+                                        <td>Full MambaVHS</td>
+                                        <td class="text-center">89.5</td>
+                                        <td class="text-center">91.8</td>
+                                        <td>Optimal configuration</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <p class="small text-muted mt-2">Table 6: Complete ablation study with performance deltas</p>
+
+                        <p>
+                            The ablation study demonstrates the critical contributions of each architectural component,
+                            with the full MambaVHS model achieving 91.8% test accuracy. Removing SE layers reduced
+                            performance by 3.3%, while using only L1 loss decreased accuracy by 3.1%. Most
+                            significantly,
+                            replacing Mamba blocks with standard attention mechanisms resulted in a 7.1% performance
+                            drop,
+                            highlighting the importance of efficient sequence modeling. The complete architecture
+                            provides
+                            optimal balance between accuracy and computational efficiency.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Conclusion Section -->
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <p class="lead text-center">
+                    The VHSMarker framework advances canine cardiac analysis through its efficient annotation tool
+                    (10-12s/image),
+                    comprehensive CCK dataset (21,465 images), and high-accuracy MambaVHS model (91.8% test accuracy,
+                    42ms inference),
+                    establishing a new benchmark for automated veterinary diagnostics.
+                </p>
+            </div>
+        </div>
+    </div>
+    <!-- Citation Section -->
+    <!-- <section class="py-5">
+        <div class="container">
+            <h2 class="section-title text-center">Citation</h2>
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div class="feature-box">
+                        <p>If you use VHSMarker in your research, please cite:</p>
+                        <pre class="bg-light p-3 rounded">@article{vhsmarker2023,
+  title={VHSMarker: High-Precision Canine Cardiac Analysis},
+  author={Your Name and Collaborators},
+  journal={Journal of Veterinary AI},
+  year={2023},
+  publisher={Nature}
+}</pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section> -->
+
+    <!-- Footer -->
+    <!-- <footer class="text-center">
+        <div class="container">
+            <div class="mb-3">
+                <a href="https://github.com/gen-ai-research/dog-vhs" target="_blank" class="text-white me-3">
+                    <i class="fab fa-github fa-2x"></i>
+                </a>
+                <a href="#" class="text-white me-3">
+                    <i class="fas fa-file-pdf fa-2x"></i>
+                </a>
+                <a href="#" class="text-white">
+                    <i class="fas fa-envelope fa-2x"></i>
+                </a>
+            </div>
+            <p class="mb-0">© 2023 VHSMarker Research Team. All rights reserved.</p>
+        </div>
+    </footer> -->
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
