@@ -118,7 +118,7 @@ checkpoints\\bm_15.pth
 ```
 
 ```bash
-git clone https://github.com/gen-ai-research/dog-vhs
+git clone https://github.com/anonymousgenai/vhsmarker.git
 cd dog-vhs
 pip install -r requirements.txt
 flask run
