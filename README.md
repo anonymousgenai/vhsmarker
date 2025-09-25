@@ -1,10 +1,10 @@
-# VHSMarker: A High-Precision Annotation Tool for Canine Cardiac Keypoint Detection and VHS Estimation
+# VHSMarker and the CCK Dataset: A Benchmark for Automated Vertebral Heart Score Estimation in Canine Radiographs
 
 🔗 Github Website URL : [https://anonymousgenai.github.io/vhsmarker/](https://anonymousgenai.github.io/vhsmarker/)
 
 ![VHSMarker UI](docs/assets/resources/imgs/Main%20Screen.png)
 
-VHSMarker is a web-based tool designed for efficient and accurate annotation of canine thoracic radiographs. It supports real-time vertebral heart score (VHS) calculation, precise labeling of six anatomical keypoints, and high-performance model inference through the MambaVHS architecture.
+We present VHSMarker, a web-based annotation tool that enables rapid and standardized labeling of six cardiac key points in canine thoracic radiographs. VHSMarker reduces annotation time to 10–12 seconds per image while supporting real-time vertebral heart score (VHS) calculation, model-assisted prediction, and quality control. Using this tool, we constructed the Canine Cardiac Key Point (CCK) Dataset, a large-scale benchmark of 21,465 annotated radiographs from 12,385 dogs across 144 breeds and additional mixed breed cases, making it the largest curated resource for canine cardiac analysis to date. To demonstrate the utility of this dataset, we introduce MambaVHS, a baseline model that integrates Mamba blocks for long-range sequence modeling with convolutional layers for local spatial precision. MambaVHS achieves 91.8% test accuracy, surpassing 13 strong baselines including ConvNeXt and EfficientNetB7, and establishes state-space modeling as a promising direction for veterinary imaging. Together, the tool, dataset, and baseline model provide the first reproducible benchmark for automated VHS estimation and a foundation for future research in veterinary cardiology.
 
 ---
 
