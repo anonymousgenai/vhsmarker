@@ -189,6 +189,32 @@
                 margin-top: 3rem;
             }
     </style>
+    <!-- Minimal CSS for div-based "table" look -->
+<style>
+  .breed-card {
+    border: 1px solid #e5e7eb;
+    border-radius: .5rem;
+    padding: .75rem .75rem .25rem;
+    background: #fff;
+    margin-bottom: 1rem;
+  }
+  .breed-header, .breed-row {
+    display: flex;
+    align-items: center;
+  }
+  .breed-header {
+    font-weight: 600;
+    border-bottom: 1px solid #f0f0f0;
+    padding-bottom: .5rem;
+    margin-bottom: .5rem;
+  }
+  .breed-cell { padding: .25rem 0; }
+  .breed-no   { width: 2.5rem; flex: 0 0 auto; text-align: right; padding-right: .5rem; color: #6b7280; }
+  .breed-name { flex: 1 1 auto; padding-right: .5rem; }
+  .breed-count{ width: 4.5rem; flex: 0 0 auto; text-align: right; font-variant-numeric: tabular-nums; }
+  .breed-total { border-top: 1px dashed #e5e7eb; margin-top: .35rem; padding-top: .35rem; }
+  .muted { color: #6b7280; font-size: .9em; }
+</style>
 </head>
 
 <body>
@@ -201,6 +227,25 @@
                     <h2 class="header-subtitle">A Benchmark for Automated Vertebral Heart Score Estimation in Canine
                         Radiographs
                         and VHS Estimation</h2>
+                        <!-- Warning Banner -->
+<div class="alert alert-warning d-flex align-items-center mt-3" role="alert">
+  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" 
+       class="bi bi-exclamation-triangle-fill me-2" viewBox="0 0 16 16">
+    <path d="M8.982 1.566a1.13 1.13 0 0 0-1.964 0L.165 13.233c-.457.778.091 
+             1.767.982 1.767h13.706c.89 0 1.438-.99.982-1.767L8.982 
+             1.566zM8 5c.535 0 .954.462.9.995l-.35 
+             3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 
+             0 0 1 8 5zm.002 6a1 1 0 1 1-2.002 0 
+             1 1 0 0 1 2.002 0z"/>
+  </svg>
+  <div>
+    <strong>Data availability during review:</strong>  
+    To preserve anonymity and comply with data agreements, the full dataset is not public.  
+    An anonymized subset and evaluation scripts are provided in the supplementary material.  
+    Full release will follow upon acceptance.
+  </div>
+</div>
+
                     <div class="mt-4">
                         <a href="https://github.com/anonymousgenai/vhsmarker" target="_blank"
                             class="btn btn-outline-secondary me-2">
@@ -1252,7 +1297,10 @@
                                     dataset, detailing the number of samples per breed for demographic and diversity
                                     analysis.</small></caption>
                         </div>
+                        
                     </div>
+                    <!-- Three-column target will be injected here -->
+                    <div id="breed-grid" class="container-fluid mt-2"></div>
 
 
 
@@ -1670,6 +1718,101 @@
     </footer> -->
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+(function() {
+  // 1) Collect all rows from the existing tables
+  const tables = document.querySelectorAll('.table-container table.breed-table');
+  const rows = [];
+  tables.forEach(t => {
+    t.querySelectorAll('tr.breed-tr').forEach(tr => {
+      const tds = tr.querySelectorAll('td.breed-td');
+      if (tds.length >= 3) {
+        const rank  = tds[0].textContent.trim();
+        const breed = tds[1].textContent.trim();
+        const count = tds[2].textContent.trim();
+        if (rank && breed && count) rows.push({ rank, breed, count });
+      }
+    });
+  });
+
+  // 2) Compute grand total from counts
+  const total = rows.reduce((sum, r) => {
+    const n = parseInt(String(r.count).replace(/[^\d]/g, ''), 10);
+    return sum + (isNaN(n) ? 0 : n);
+  }, 0);
+
+  // 3) Build 3 responsive columns using Bootstrap
+  const grid = document.getElementById('breed-grid');
+
+  const titleRow = document.createElement('div');
+  titleRow.className = 'row';
+  titleRow.innerHTML = `
+    <div class="col-12">
+      <div class="muted mb-2">Breed-wise distribution of annotated canine X-ray images (three responsive columns).</div>
+    </div>`;
+  grid.appendChild(titleRow);
+
+  const n = rows.length;
+  const chunkSize = Math.ceil(n / 3);
+  const chunks = [rows.slice(0, chunkSize),
+                  rows.slice(chunkSize, 2*chunkSize),
+                  rows.slice(2*chunkSize)];
+
+  const row = document.createElement('div');
+  row.className = 'row g-3';
+
+  let lastCard = null;
+
+  chunks.forEach((chunk, idx) => {
+    const col = document.createElement('div');
+    col.className = 'col-12 col-md-4';
+
+    const card = document.createElement('div');
+    card.className = 'breed-card';
+
+    const header = document.createElement('div');
+    header.className = 'breed-header';
+    header.innerHTML = `
+      <div class="breed-no">#</div>
+      <div class="breed-name">Breed</div>
+      <div class="breed-count">Count</div>`;
+    card.appendChild(header);
+
+    chunk.forEach(item => {
+      const r = document.createElement('div');
+      r.className = 'breed-row';
+      r.innerHTML = `
+        <div class="breed-cell breed-no">${item.rank}</div>
+        <div class="breed-cell breed-name">${item.breed}</div>
+        <div class="breed-cell breed-count">${item.count}</div>`;
+      card.appendChild(r);
+    });
+
+    col.appendChild(card);
+    row.appendChild(col);
+
+    if (idx === chunks.length - 1) lastCard = card;
+  });
+
+  grid.appendChild(row);
+
+  // 4) Append a bold "Total" row at the end of the LAST column
+  if (lastCard) {
+    const totalRow = document.createElement('div');
+    totalRow.className = 'breed-row breed-total';
+    totalRow.innerHTML = `
+      <div class="breed-cell breed-no">—</div>
+      <div class="breed-cell breed-name"><strong>Total</strong></div>
+      <div class="breed-cell breed-count"><strong>${total.toLocaleString()}</strong></div>`;
+    lastCard.appendChild(totalRow);
+  }
+
+  // 5) Remove the original tables and caption to avoid duplication
+  tables.forEach(t => t.remove());
+  const cap = document.querySelector('.table-container > caption');
+  if (cap) cap.remove();
+})();
+</script>
 </body>
 
 </html>
