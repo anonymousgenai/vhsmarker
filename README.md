@@ -38,6 +38,8 @@ We present VHSMarker, a web-based annotation tool that enables rapid and standar
 
 ![Dataset Preview](docs/assets/resources/imgs/dspreview.png)
 
+### Data availability during review: To preserve anonymity and comply with data agreements, the full dataset is not public. An anonymized subset and evaluation scripts are provided in the supplementary material. Full release will follow upon acceptance.
+
 Download the dataset from [Hugging Face](https://huggingface.co/datasets/gen-ai-researcher/vhs_dogheart_db).
 
 ---
